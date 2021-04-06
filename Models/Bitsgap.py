@@ -21,9 +21,9 @@ class Bitsgap:
 
     def init_driver(self):
         options = webdriver.ChromeOptions()
-        #options.add_argument("--disable-blink-features")
-        #options.add_argument("--disable-blink-features=AutomationControlled")
-        #options.add_argument("--start-maximized")
+        options.add_argument("--disable-blink-features")
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        options.add_argument("--start-maximized")
         #options.add_argument("--kiosk")
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
         time.sleep(5)
@@ -53,9 +53,6 @@ class Bitsgap:
             pairs_and_profit__dom = self.driver.find_element_by_xpath("//div[@class='strategies-list']")
             pairs_and_profit = pairs_and_profit__dom.text.splitlines()
 
-            #print(pairs_and_profit)
-            #print('pares: ' + str(len(pairs_and_profit)))
-            #print('cuenta: ' + str(int(len(pairs_and_profit) / 2)))
             pairs_amount = int( len( pairs_and_profit ) / 2 )
             pairs_range = range(0, pairs_amount, 2 )
 
@@ -70,11 +67,10 @@ class Bitsgap:
 
                 # Remove repeated pairs
                 listd = list({frozenset(item.items()) : item for item in listd}.values())
-                if len(listd) > self.max_number_of_pairs:
+                if len(listd) >= self.max_number_of_pairs:
                     return listd
 
-            actions.send_keys(Keys.ARROW_DOWN + Keys.ARROW_DOWN + Keys.ARROW_DOWN)
-            actions.perform()
+            self.driver.execute_script("document.querySelector('.strategies-list').scrollBy(0,100)")
             time.sleep(2)
 
         return listd
@@ -114,4 +110,3 @@ class Bitsgap:
 
     def cleanup(self):
         self.driver.quit()
-
