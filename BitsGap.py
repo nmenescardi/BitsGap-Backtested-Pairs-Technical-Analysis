@@ -8,9 +8,14 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
 from webdriver_manager.chrome import ChromeDriverManager
-import time, sys, json
+from dotenv import load_dotenv
+import time, sys, json, os
 
-max_number_of_pairs = 20
+# Load Env variables:
+load_dotenv()
+max_number_of_pairs = int(os.getenv("MAX_NUMBER_OF_PAIRS"))
+bitsgap_email = os.getenv("BITSGAP_EMAIL")
+bitsgap_password = os.getenv("BITSGAP_PASSWORD")
 
 options = webdriver.ChromeOptions()
 options.add_argument("--disable-blink-features")
@@ -22,8 +27,8 @@ time.sleep(5)
  
 driver.get("https://bitsgap.com/sign-in/?d=app")
 WebDriverWait(driver, 10).until(ec.visibility_of_element_located((By.XPATH, "//input[@id='lemail']")))
-driver.find_element_by_xpath("//input[@id='lemail']").send_keys("o1n1u9+dtvepbcddt9u0@sharklasers.com")
-driver.find_element_by_xpath("//input[@id='lpassword']").send_keys("BitsGap11")
+driver.find_element_by_xpath("//input[@id='lemail']").send_keys(bitsgap_email)
+driver.find_element_by_xpath("//input[@id='lpassword']").send_keys(bitsgap_password)
 actions = ActionChains(driver)
 actions.send_keys(Keys.ENTER)
 actions.perform()
