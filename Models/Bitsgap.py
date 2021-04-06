@@ -21,10 +21,10 @@ class Bitsgap:
 
     def init_driver(self):
         options = webdriver.ChromeOptions()
-        options.add_argument("--disable-blink-features")
-        options.add_argument("--disable-blink-features=AutomationControlled")
-        options.add_argument("--start-maximized")
-        options.add_argument("--kiosk")
+        #options.add_argument("--disable-blink-features")
+        #options.add_argument("--disable-blink-features=AutomationControlled")
+        #options.add_argument("--start-maximized")
+        #options.add_argument("--kiosk")
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
         time.sleep(5)
 
@@ -44,9 +44,12 @@ class Bitsgap:
 
     def __get_pairs(self):
         listd = []
+
+        time.sleep(5)
+        self.driver.find_element_by_xpath("//div[@class='strategies-list__item']").click()
         actions = ActionChains(self.driver)
 
-        for i in range(0, 50):
+        for i in range(0, self.max_number_of_pairs):
             pairs_and_profit__dom = self.driver.find_element_by_xpath("//div[@class='strategies-list']")
             pairs_and_profit = pairs_and_profit__dom.text.splitlines()
 
@@ -74,22 +77,15 @@ class Bitsgap:
             actions.perform()
             time.sleep(2)
 
-        print('Finish')
         return listd
 
         
-    def get_month(self):
-        #print("Month")
-        time.sleep(5)
-        self.driver.find_element_by_xpath("//div[@class='strategies-list__item']").click()
-        listd = self.__get_pairs()
+    def get_month(self):        
+        monthly_pairs = self.__get_pairs()
         
+        print(monthly_pairs)
         print("------------final--------------------month-------------")
-        print(listd)
-        
-        self.driver.quit()
-        sys.exit(0)
-        
+                
         
     def get_week(self):
         strategies = self.driver.find_element_by_xpath("//div[@class='strategies']")
@@ -97,32 +93,10 @@ class Bitsgap:
         time.sleep(2)
         self.driver.find_elements_by_xpath("//li[@class='MuiButtonBase-root MuiListItem-root MuiMenuItem-root strategies__menu-item MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button']")[1].click()
         time.sleep(2)
-        WebDriverWait(self.driver, 30).until(ec.visibility_of_element_located((By.XPATH, "//div[@class='strategies__list']")))
-        print("Week")
-        time.sleep(5)
-        d2 = {}
-        listd2 = []
-
-
-        self.driver.find_element_by_xpath("//div[@class='strategies-list__item']").click()
-        actions = ActionChains(self.driver)
-        for i in range(0, 25):
-            month = self.driver.find_element_by_xpath("//div[@class='strategies-list']")
-            months = month.text.splitlines()
-            for j in range(0, int(len(months) / 2), 2):
-                # print(months[j] + " :  " + months[j + 1])
-                #dxj = {'pair': months[j], 'profit': months[j+1]}
-                #listd2.append(dxj)
-                
-                d2[months[j]] = months[j + 1]
-            actions.send_keys(Keys.ARROW_DOWN + Keys.ARROW_DOWN + Keys.ARROW_DOWN)
-            actions.perform()
-            time.sleep(2)
-
-        print("------------final--------------------week-------------")
-        # print(d2)
-        print(dict(list(d2.items())[0: self.max_number_of_pairs]))
-        #print(listd2)
+        
+        weekly_pairs = self.__get_pairs()
+        print(weekly_pairs)
+        print("------------final--------------------Week-------------")
 
         
     def get_three_days(self):
@@ -132,30 +106,10 @@ class Bitsgap:
         self.driver.find_elements_by_xpath("//li[@class='MuiButtonBase-root MuiListItem-root MuiMenuItem-root strategies__menu-item MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button']")[0].click()
         time.sleep(2)
         WebDriverWait(self.driver, 30).until(ec.visibility_of_element_located((By.XPATH, "//div[@class='strategies__list']")))
-        print("3 days")
-        time.sleep(5)
-        d3 = {}
-        listd3 = []
-
-        self.driver.find_element_by_xpath("//div[@class='strategies-list__item']").click()
-        actions = ActionChains(self.driver)
-        for i in range(0, 25):
-            month = self.driver.find_element_by_xpath("//div[@class='strategies-list']")
-            months = month.text.splitlines()
-            for j in range(0, int(len(months) / 2), 2):
-                # print(months[j] + " :  " + months[j + 1])
-                #dxj = {'pair': months[j], 'profit': months[j+1]}
-                #listd3.append(dxj)
-                d3[months[j]] = months[j + 1]
-            actions.send_keys(Keys.ARROW_DOWN + Keys.ARROW_DOWN + Keys.ARROW_DOWN)
-            actions.perform()
-            time.sleep(2)
-
-
-        print("------------final--------------------day-------------")
-        # print(d3)
-        print(dict(list(d3.items())[0: self.max_number_of_pairs]))
-        #print(listd3)
+        
+        daily_pairs = self.__get_pairs()
+        print(daily_pairs)
+        print("------------final--------------------Daily-------------")
 
 
     def cleanup(self):

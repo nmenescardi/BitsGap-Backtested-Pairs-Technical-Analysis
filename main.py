@@ -17,5 +17,7 @@ bitsgap = Bitsgap(credentials, max_number_of_pairs)
 
 bitsgap.login()
 bitsgap.get_month()
+#bitsgap.get_week()
+#bitsgap.get_three_days()
 
 bitsgap.cleanup()
