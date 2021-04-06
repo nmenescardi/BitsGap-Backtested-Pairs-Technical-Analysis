@@ -42,45 +42,51 @@ class Bitsgap:
         WebDriverWait(self.driver, 30).until(ec.visibility_of_element_located((By.XPATH, "//div[@class='strategies__list']")))
         
 
-    def get_month(self):
-        #print("Month")
-        time.sleep(5)
-        d = {}
+    def __get_pairs(self):
         listd = []
-        pairs_counter = 0
-
-        self.driver.find_element_by_xpath("//div[@class='strategies-list__item']").click()
         actions = ActionChains(self.driver)
 
-        for i in range(0, self.max_number_of_pairs):
-            month = self.driver.find_element_by_xpath("//div[@class='strategies-list']")
-            months = month.text.splitlines()
+        for i in range(0, 50):
+            pairs_and_profit__dom = self.driver.find_element_by_xpath("//div[@class='strategies-list']")
+            pairs_and_profit = pairs_and_profit__dom.text.splitlines()
 
-            for j in range(0, int(len(months) / 2), 2):
-                if pairs_counter >= self.max_number_of_pairs:
-                    break #TODO: return
+            #print(pairs_and_profit)
+            #print('pares: ' + str(len(pairs_and_profit)))
+            #print('cuenta: ' + str(int(len(pairs_and_profit) / 2)))
+            pairs_amount = int( len( pairs_and_profit ) / 2 )
+            pairs_range = range(0, pairs_amount, 2 )
 
-                pairs_counter = pairs_counter + 1
-                print(pairs_counter)
-        
-                #print(months[j] + " :  " + months[j + 1])
-                d[months[j]] = months[j + 1]
-                dxj = {'pair': months[j], 'profit': months[j+1]}
-                listd.append(dxj)
+            for j in pairs_range:
+                pair_index = j
+                profit_index = j + 1
 
-            if pairs_counter >= self.max_number_of_pairs:
-                break #TODO: remove duplicate condition
+                listd.append( { 
+                    'pair': pairs_and_profit[ pair_index ], 
+                    'profit': pairs_and_profit[ profit_index ] 
+                } )
+
+                # Remove repeated pairs
+                listd = list({frozenset(item.items()) : item for item in listd}.values())
+                if len(listd) > self.max_number_of_pairs:
+                    return listd
 
             actions.send_keys(Keys.ARROW_DOWN + Keys.ARROW_DOWN + Keys.ARROW_DOWN)
             actions.perform()
             time.sleep(2)
 
-        print("------------final--------------------month-------------")
-        #print(d)
-        print(dict(list(d.items())[0: self.max_number_of_pairs]))
-        print(listd)
+        print('Finish')
+        return listd
 
-                
+        
+    def get_month(self):
+        #print("Month")
+        time.sleep(5)
+        self.driver.find_element_by_xpath("//div[@class='strategies-list__item']").click()
+        listd = self.__get_pairs()
+        
+        print("------------final--------------------month-------------")
+        print(listd)
+        
         self.driver.quit()
         sys.exit(0)
         
