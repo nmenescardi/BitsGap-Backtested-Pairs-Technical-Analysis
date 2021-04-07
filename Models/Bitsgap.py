@@ -43,38 +43,45 @@ class Bitsgap:
         
 
     def __get_pairs(self):
-        listd = []
+        results = []
 
         time.sleep(5)
         self.driver.find_element_by_xpath("//div[@class='strategies-list__item']").click()
         actions = ActionChains(self.driver)
 
         for i in range(0, self.max_number_of_pairs):
-            pairs_and_profit__dom = self.driver.find_element_by_xpath("//div[@class='strategies-list']")
-            pairs_and_profit = pairs_and_profit__dom.text.splitlines()
 
-            pairs_amount = int( len( pairs_and_profit ) / 2 )
-            pairs_range = range(0, pairs_amount, 2 )
+            pairs_and_profit, pairs_range = self.__get_pairs_and_profit_list()
 
             for j in pairs_range:
                 pair_index = j
                 profit_index = j + 1
 
-                listd.append( { 
+                results.append( { 
                     'pair': pairs_and_profit[ pair_index ], 
                     'profit': pairs_and_profit[ profit_index ] 
                 } )
 
                 # Remove repeated pairs
-                listd = list({frozenset(item.items()) : item for item in listd}.values())
-                if len(listd) >= self.max_number_of_pairs:
-                    return listd
+                results = list({frozenset(item.items()) : item for item in results}.values())
+                if len(results) >= self.max_number_of_pairs:
+                    return results
 
             self.__scroll_list_down()
             
-        return listd
+        return results
 
-        
+
+    def __get_pairs_and_profit_list(self):
+            pairs_and_profit__dom = self.driver.find_element_by_xpath("//div[@class='strategies-list']")
+            pairs_and_profit = pairs_and_profit__dom.text.splitlines()
+
+            pairs_amount = int( len( pairs_and_profit ) / 2 )
+            pairs_range = range(0, pairs_amount, 2 )
+            
+            return pairs_and_profit, pairs_range
+
+
     def get_month(self):        
         monthly_pairs = self.__get_pairs()
         
