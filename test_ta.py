@@ -22,6 +22,7 @@ pairs = [
 intervals = [
     Interval.INTERVAL_1_MINUTE,
     Interval.INTERVAL_5_MINUTES,
+    Interval.INTERVAL_15_MINUTES,
     Interval.INTERVAL_1_HOUR,
     Interval.INTERVAL_4_HOURS,
     Interval.INTERVAL_1_DAY,
