@@ -70,9 +70,8 @@ class Bitsgap:
                 if len(listd) >= self.max_number_of_pairs:
                     return listd
 
-            self.driver.execute_script("document.querySelector('.strategies-list').scrollBy(0,100)")
-            time.sleep(2)
-
+            self.__scroll_list_down()
+            
         return listd
 
         
@@ -111,6 +110,11 @@ class Bitsgap:
 
     def __wait_for_strategy_list(self):
         WebDriverWait(self.driver, 30).until(ec.visibility_of_element_located((By.XPATH, "//div[@class='strategies__list']")))
+
+
+    def __scroll_list_down(self):
+        self.driver.execute_script("document.querySelector('.strategies-list').scrollBy(0,100)")
+        time.sleep(2)
 
 
     def cleanup(self):
