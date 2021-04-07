@@ -57,14 +57,17 @@ class Bitsgap:
                     'profit': pairs_and_profit[ profit_index ] 
                 } )
 
-                # Remove repeated pairs
-                results = list({frozenset(item.items()) : item for item in results}.values())
+                results = self.__remove_repeated_pairs( results )
                 if len(results) >= self.max_number_of_pairs:
                     return results
 
             self.__scroll_list_down()
             
         return results
+
+
+    def __remove_repeated_pairs(self, results):
+        return list({frozenset(item.items()) : item for item in results}.values())
 
 
     def __get_pairs_and_profit_list(self):
