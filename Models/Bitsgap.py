@@ -45,12 +45,7 @@ class Bitsgap:
     def __get_pairs(self):
         results = []
 
-        time.sleep(5)
-        self.driver.find_element_by_xpath("//div[@class='strategies-list__item']").click()
-        actions = ActionChains(self.driver)
-
         for i in range(0, self.max_number_of_pairs):
-
             pairs_and_profit, pairs_range = self.__get_pairs_and_profit_list()
 
             for j in pairs_range:
