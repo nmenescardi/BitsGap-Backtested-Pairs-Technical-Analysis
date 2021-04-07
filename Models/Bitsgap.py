@@ -84,11 +84,7 @@ class Bitsgap:
                 
         
     def get_week(self):
-        strategies = self.driver.find_element_by_xpath("//div[@class='strategies']")
-        strategies.find_element_by_xpath("//span[contains(text(),'Month')]").click()
-        time.sleep(2)
-        self.driver.find_elements_by_xpath("//li[@class='MuiButtonBase-root MuiListItem-root MuiMenuItem-root strategies__menu-item MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button']")[1].click()
-        time.sleep(2)
+        self.__switch_list(current_text = 'Month', index = 1)
         
         weekly_pairs = self.__get_pairs()
         print(weekly_pairs)
@@ -96,16 +92,21 @@ class Bitsgap:
 
         
     def get_three_days(self):
-        strategies = self.driver.find_element_by_xpath("//div[@class='strategies']")
-        strategies.find_element_by_xpath("//span[contains(text(),'Week')]").click()
-
-        self.driver.find_elements_by_xpath("//li[@class='MuiButtonBase-root MuiListItem-root MuiMenuItem-root strategies__menu-item MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button']")[0].click()
-        time.sleep(2)
-        WebDriverWait(self.driver, 30).until(ec.visibility_of_element_located((By.XPATH, "//div[@class='strategies__list']")))
-        
+        self.__switch_list(current_text = 'Week', index = 0)
+                
         daily_pairs = self.__get_pairs()
         print(daily_pairs)
         print("------------final--------------------Daily-------------")
+
+
+    def __switch_list(self, current_text = 'Month', index = 1):
+        strategies = self.driver.find_element_by_xpath("//div[@class='strategies']")
+        xpath_str = "//span[contains(text(),'{}')]".format(current_text)
+        strategies.find_element_by_xpath( xpath_str ).click()
+        time.sleep(2)
+        self.driver.find_elements_by_xpath("//li[@class='MuiButtonBase-root MuiListItem-root MuiMenuItem-root strategies__menu-item MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button']")[index].click()
+        time.sleep(2)
+        WebDriverWait(self.driver, 30).until(ec.visibility_of_element_located((By.XPATH, "//div[@class='strategies__list']")))
 
 
     def cleanup(self):
