@@ -71,13 +71,13 @@ class Bitsgap:
 
 
     def __get_pairs_and_profit_list(self):
-            pairs_and_profit__dom = self.driver.find_element_by_xpath("//div[@class='strategies-list']")
-            pairs_and_profit = pairs_and_profit__dom.text.splitlines()
+        pairs_and_profit__dom = self.driver.find_element_by_xpath("//div[@class='strategies-list']")
+        pairs_and_profit = pairs_and_profit__dom.text.splitlines()
 
-            pairs_amount = int( len( pairs_and_profit ) / 2 )
-            pairs_range = range(0, pairs_amount, 2 )
+        pairs_amount = int( len( pairs_and_profit ) / 2 )
+        pairs_range = range(0, pairs_amount, 2 )
             
-            return pairs_and_profit, pairs_range
+        return pairs_and_profit, pairs_range
 
 
     def get_month(self):        
