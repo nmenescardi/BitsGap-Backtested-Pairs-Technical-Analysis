@@ -39,7 +39,7 @@ class Bitsgap:
         actions.perform()
         time.sleep(5)
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        WebDriverWait(self.driver, 30).until(ec.visibility_of_element_located((By.XPATH, "//div[@class='strategies__list']")))
+        self.__wait_for_strategy_list()
         
 
     def __get_pairs(self):
@@ -106,6 +106,10 @@ class Bitsgap:
         time.sleep(2)
         self.driver.find_elements_by_xpath("//li[@class='MuiButtonBase-root MuiListItem-root MuiMenuItem-root strategies__menu-item MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button']")[index].click()
         time.sleep(2)
+        self.__wait_for_strategy_list()
+
+
+    def __wait_for_strategy_list(self):
         WebDriverWait(self.driver, 30).until(ec.visibility_of_element_located((By.XPATH, "//div[@class='strategies__list']")))
 
 
