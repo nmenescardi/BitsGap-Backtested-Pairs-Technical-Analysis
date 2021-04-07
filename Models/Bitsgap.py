@@ -16,10 +16,10 @@ class Bitsgap:
         self.credentials = credentials
         self.max_number_of_pairs = max_number_of_pairs
 
-        self.init_driver()
+        self.__init_driver()
 
 
-    def init_driver(self):
+    def __init_driver(self):
         options = webdriver.ChromeOptions()
         options.add_argument("--disable-blink-features")
         options.add_argument("--disable-blink-features=AutomationControlled")
