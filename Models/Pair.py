@@ -1,9 +1,12 @@
-
 class Pair:
     
-    categories = [] #TODO enum
+    categories = {
+        '3_days'    : '3_DAYS',
+        'Week'      : 'WEEK',
+        'Month'     : 'MONTH'
+    }
 
-    def __init__(self, symbol_str, profit_str = "", category = 'MONTH', exchanger = 'BINANCE'):
+    def __init__(self, symbol_str, profit_str = '', category = categories['Month'], exchanger = 'BINANCE'):
         self.symbol = self.format_symbol( symbol_str )
         self.profit = self.format_profit( profit_str )
         self.category = category
