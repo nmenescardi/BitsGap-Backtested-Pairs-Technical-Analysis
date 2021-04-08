@@ -12,9 +12,10 @@ import time, sys
 
 
 class Bitsgap:
-    def __init__(self, credentials, max_number_of_pairs):
+    def __init__(self, credentials, max_number_of_pairs, should_print = False):
         self.credentials = credentials
         self.max_number_of_pairs = max_number_of_pairs
+        self.should_print = should_print
 
         self.__init_driver()
 
@@ -83,24 +84,27 @@ class Bitsgap:
     def get_month(self):        
         monthly_pairs = self.__get_pairs()
         
-        print(monthly_pairs)
-        print("------------final--------------------month-------------")
+        self.__print(monthly_pairs)
+        self.__print("------------final--------------------month-------------")
+        return monthly_pairs
                 
         
     def get_week(self):
         self.__switch_list(current_text = 'Month', index = 1)
         
         weekly_pairs = self.__get_pairs()
-        print(weekly_pairs)
-        print("------------final--------------------Week-------------")
+        self.__print(weekly_pairs)
+        self.__print("------------final--------------------Week-------------")
+        return weekly_pairs
 
         
     def get_three_days(self):
         self.__switch_list(current_text = 'Week', index = 0)
                 
         daily_pairs = self.__get_pairs()
-        print(daily_pairs)
-        print("------------final--------------------Daily-------------")
+        self.__print(daily_pairs)
+        self.__print("------------final--------------------Daily-------------")
+        return daily_pairs
 
 
     def __switch_list(self, current_text = 'Month', index = 1):
@@ -124,3 +128,8 @@ class Bitsgap:
 
     def cleanup(self):
         self.driver.quit()
+
+
+    def __print(self, payload):
+        if self.should_print:
+            print(payload)
