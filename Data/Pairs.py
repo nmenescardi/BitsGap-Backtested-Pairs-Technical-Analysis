@@ -1,0 +1,30 @@
+from Data.AbstractDAO import AbstractDAO
+
+class Pairs(AbstractDAO):
+
+    def __init__(self):
+        super(Pairs, self).__init__()
+
+
+    def insert(self, payload):
+        if hasattr(payload, '__iter__'):
+            for pair in payload:
+                self.__insert(pair)
+        else:
+            self.__insert(payload)
+
+
+    def __insert(self, pair): 
+        result = self.execute(
+            """
+                INSERT IGNORE INTO pairs 
+                    (symbol, exchanger)
+                VALUES 
+                    (%s,%s);
+            """,
+            (pair.symbol, pair.exchanger, )
+        )
+        self.db.commit()
+        
+        print('query result: ')
+        print(vars(result))

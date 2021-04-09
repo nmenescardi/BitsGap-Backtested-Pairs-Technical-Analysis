@@ -2,8 +2,12 @@ from dotenv import load_dotenv
 import time, sys, json, os
 from Models.Bitsgap import Bitsgap
 from Models.Credentials import Credentials
-        
+from Data.Pairs import Pairs as PairsDAO
+
 class PairsFetcher:
+    
+    def __init__(self):
+        self.pairs_dao = PairsDAO()
     
     def run(self):
         # Load Env variables:
@@ -26,3 +30,14 @@ class PairsFetcher:
         )
 
         bitsgap.cleanup()
+
+        #print('Pairs: ' + str(len(pairs)))
+        #TODO: Insert a new 'batch' and get the 'batch_id'
+        
+        for pair in pairs:            
+            self.pairs_dao.insert(pair)
+        
+        # Foreach pair:
+            #TODO: save the 'pair enity' (symbol + exchanger) and get the 'pair_id'
+            #TODO: insert 'batches_pairs' with previous IDs and profit + category
+        #
