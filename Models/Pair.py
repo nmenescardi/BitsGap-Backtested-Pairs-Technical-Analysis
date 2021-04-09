@@ -11,6 +11,8 @@ class Pair:
         self.profit = self.format_profit( profit_str )
         self.category = category
         self.exchanger = exchanger
+        self.batch_id = 0
+        self.pair_id = 0
 
 
     def format_symbol(self, symbol_str):

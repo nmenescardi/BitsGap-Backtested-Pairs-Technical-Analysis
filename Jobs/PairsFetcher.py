@@ -38,8 +38,10 @@ class PairsFetcher:
 
         for pair in pairs:            
             self.pairs_dao.insert(pair)
+            pair.batch_id = batch_id
+            pair.pair_id = self.pairs_dao.get_pair_id_by_symbol(pair.symbol)
+            
         
         # Foreach pair:
-            #TODO: save the 'pair enity' (symbol + exchanger) and get the 'pair_id'
             #TODO: insert 'batches_pairs' with previous IDs and profit + category
         #
