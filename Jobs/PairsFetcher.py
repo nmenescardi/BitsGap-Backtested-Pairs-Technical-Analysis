@@ -17,8 +17,12 @@ class PairsFetcher:
         bitsgap = Bitsgap(credentials, max_number_of_pairs, should_print = True)
 
         bitsgap.login()
-        month_list = bitsgap.get_month()        
-        week_list = bitsgap.get_week()
-        three_days_list = bitsgap.get_three_days()
+        
+        pairs = set()
+        pairs.update( 
+            bitsgap.get_month(),
+            bitsgap.get_week(),
+            bitsgap.get_three_days()
+        )
 
         bitsgap.cleanup()
