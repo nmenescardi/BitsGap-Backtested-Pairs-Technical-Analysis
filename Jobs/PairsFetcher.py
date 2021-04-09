@@ -3,11 +3,13 @@ import time, sys, json, os
 from Models.Bitsgap import Bitsgap
 from Models.Credentials import Credentials
 from Data.Pairs import Pairs as PairsDAO
+from Data.Batches import Batches as BatchesDAO
 
 class PairsFetcher:
     
     def __init__(self):
         self.pairs_dao = PairsDAO()
+        self.batches_dao = BatchesDAO()
     
     def run(self):
         # Load Env variables:
@@ -31,9 +33,9 @@ class PairsFetcher:
 
         bitsgap.cleanup()
 
-        #print('Pairs: ' + str(len(pairs)))
-        #TODO: Insert a new 'batch' and get the 'batch_id'
-        
+        batch_id = self.batches_dao.new()
+        #print('Batch ID:' + str(batch_id))
+
         for pair in pairs:            
             self.pairs_dao.insert(pair)
         
