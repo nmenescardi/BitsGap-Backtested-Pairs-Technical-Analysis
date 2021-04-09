@@ -47,3 +47,17 @@ class Pairs(AbstractDAO):
             pair_id = pair_id_result[0]
             self.pair_ids[symbol] = pair_id
             return pair_id
+
+
+    def get_pairs_by_quote(self, quote = 'BTC'):
+        iterator = self.execute("SELECT * FROM pairs WHERE symbol LIKE %s;",
+            ('%' + quote,), 
+            named_tuple=True
+        )
+
+        pairs = []
+
+        for pair in iterator:
+            pairs.append(pair.symbol)
+        
+        return pairs
