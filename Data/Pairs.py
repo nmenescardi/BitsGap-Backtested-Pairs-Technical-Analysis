@@ -15,7 +15,7 @@ class Pairs(AbstractDAO):
 
 
     def __insert(self, pair): 
-        result = self.execute(
+        self.execute(
             """
                 INSERT IGNORE INTO pairs 
                     (symbol, exchanger)
@@ -25,9 +25,6 @@ class Pairs(AbstractDAO):
             (pair.symbol, pair.exchanger, )
         )
         self.db.commit()
-        
-        print('query result: ')
-        print(vars(result))
 
 
     def get_pair_id_by_symbol(self, symbol):
