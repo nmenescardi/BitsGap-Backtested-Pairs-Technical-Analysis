@@ -15,8 +15,8 @@ class BatchSaver:
     def run(self):
         batch_id = self.batches_dao.new()
 
-        for pair in self.pairs:            
+        for pair in self.pairs:
             self.pairs_dao.insert(pair)
             pair.batch_id = batch_id
-            pair.pair_id = self.pairs_dao.get_pair_id_by_symbol(pair.symbol)            
+            pair.pair_id = self.pairs_dao.get_pair_id_by_symbol(pair.symbol)
             self.batches_pairs_dao.insert(pair)
