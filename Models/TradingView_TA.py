@@ -21,25 +21,28 @@ class TradingView_TA:
     }
 
 
-    def __init__(self):
-        pass
+    def __init__(self, should_print = False):
+        self.should_print = should_print
 
     
-    def fetch_ta(self, pair):
+    def fetch_ta(self, symbol):
         for interval_i in self.intervals:
             
             pair_ta = TA_Handler(
-                symbol=pair,
+                symbol=symbol,
                 screener="crypto",
                 exchange="BINANCE",
                 interval=interval_i
             )
-            self.print_result(pair_ta, pair, interval_i)
+            self.print_result(pair_ta, symbol, interval_i)
             time.sleep(2)
 
         
-    def print_result(self, pair_ta, pair, interval):
-        header_str = "{}-{}".format(pair, interval)
+    def print_result(self, pair_ta, symbol, interval):
+        if not self.should_print:
+            return
+
+        header_str = "{}-{}".format(symbol, interval)
         print(header_str)
         body_str = "Summary: {}. Oscillators: {}. MAs: {}".format(
             pair_ta.get_analysis().summary['RECOMMENDATION'],
