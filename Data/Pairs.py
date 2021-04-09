@@ -28,3 +28,17 @@ class Pairs(AbstractDAO):
         
         print('query result: ')
         print(vars(result))
+
+
+    def get_pair_id_by_symbol(self, symbol):
+
+        cursor = self.execute("SELECT pair_id FROM pairs WHERE symbol = %s;",
+            (symbol,)
+        )
+
+        pair_id_result = cursor.fetchone()
+
+        if pair_id_result is None:
+            return None
+
+        return pair_id_result[0]
