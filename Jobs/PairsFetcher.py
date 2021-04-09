@@ -36,11 +36,9 @@ class PairsFetcher:
         bitsgap.cleanup()
 
         batch_id = self.batches_dao.new()
-        #print('Batch ID:' + str(batch_id))
 
         for pair in pairs:            
             self.pairs_dao.insert(pair)
             pair.batch_id = batch_id
-            pair.pair_id = self.pairs_dao.get_pair_id_by_symbol(pair.symbol)
-            
+            pair.pair_id = self.pairs_dao.get_pair_id_by_symbol(pair.symbol)            
             self.batches_pairs_dao.insert(pair)
