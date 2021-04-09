@@ -19,3 +19,12 @@ class Pair:
         
     def format_profit(self, profit_str):
         return float(profit_str.replace(" ", "").replace("%", ""))
+
+
+    def __hash__(self):
+        return hash((self.symbol, self.profit, self.category, self.exchanger))
+
+
+    def __eq__(self, other):
+        if not isinstance(other, type(self)): return NotImplemented
+        return self.symbol == other.symbol and self.exchanger == other.exchanger

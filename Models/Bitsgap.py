@@ -1,3 +1,4 @@
+from Models.Pair import Pair
 from selenium import webdriver
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -43,8 +44,8 @@ class Bitsgap:
         self.__wait_for_strategy_list()
         
 
-    def __get_pairs(self):
-        results = []
+    def __get_pairs(self, category = Pair.categories['Month']):
+        results = set()
 
         for i in range(0, self.max_number_of_pairs):
             pairs_and_profit, pairs_range = self.__get_pairs_and_profit_list()
@@ -53,22 +54,18 @@ class Bitsgap:
                 pair_index = j
                 profit_index = j + 1
 
-                results.append( { 
-                    'pair': pairs_and_profit[ pair_index ], 
-                    'profit': pairs_and_profit[ profit_index ] 
-                } )
+                results.add( Pair(
+                    symbol_str = pairs_and_profit[ pair_index ], 
+                    profit_str = pairs_and_profit[ profit_index ], 
+                    category = category
+                ) )
 
-                results = self.__remove_repeated_pairs( results )
                 if len(results) >= self.max_number_of_pairs:
                     return results
 
             self.__scroll_list_down()
             
         return results
-
-
-    def __remove_repeated_pairs(self, results):
-        return list({frozenset(item.items()) : item for item in results}.values())
 
 
     def __get_pairs_and_profit_list(self):
@@ -82,7 +79,7 @@ class Bitsgap:
 
 
     def get_month(self):        
-        monthly_pairs = self.__get_pairs()
+        monthly_pairs = self.__get_pairs(category = Pair.categories['Month'])
         
         self.__print(monthly_pairs)
         self.__print("------------final--------------------month-------------")
@@ -92,7 +89,7 @@ class Bitsgap:
     def get_week(self):
         self.__switch_list(current_text = 'Month', index = 1)
         
-        weekly_pairs = self.__get_pairs()
+        weekly_pairs = self.__get_pairs(category = Pair.categories['Week'])
         self.__print(weekly_pairs)
         self.__print("------------final--------------------Week-------------")
         return weekly_pairs
@@ -101,7 +98,7 @@ class Bitsgap:
     def get_three_days(self):
         self.__switch_list(current_text = 'Week', index = 0)
                 
-        daily_pairs = self.__get_pairs()
+        daily_pairs = self.__get_pairs(category = Pair.categories['3_days'])
         self.__print(daily_pairs)
         self.__print("------------final--------------------Daily-------------")
         return daily_pairs
@@ -132,4 +129,7 @@ class Bitsgap:
 
     def __print(self, payload):
         if self.should_print:
-            print(payload)
+            try:
+                [print(vars(item)) for item in payload]
+            except:
+                print(payload)
