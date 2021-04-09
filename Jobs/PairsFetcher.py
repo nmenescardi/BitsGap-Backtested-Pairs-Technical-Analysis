@@ -4,12 +4,14 @@ from Models.Bitsgap import Bitsgap
 from Models.Credentials import Credentials
 from Data.Pairs import Pairs as PairsDAO
 from Data.Batches import Batches as BatchesDAO
+from Data.BatchesPairs import BatchesPairs as BatchesPairsDAO
 
 class PairsFetcher:
     
     def __init__(self):
         self.pairs_dao = PairsDAO()
         self.batches_dao = BatchesDAO()
+        self.batches_pairs_dao = BatchesPairsDAO()
     
     def run(self):
         # Load Env variables:
@@ -41,7 +43,4 @@ class PairsFetcher:
             pair.batch_id = batch_id
             pair.pair_id = self.pairs_dao.get_pair_id_by_symbol(pair.symbol)
             
-        
-        # Foreach pair:
-            #TODO: insert 'batches_pairs' with previous IDs and profit + category
-        #
+            self.batches_pairs_dao.insert(pair)
