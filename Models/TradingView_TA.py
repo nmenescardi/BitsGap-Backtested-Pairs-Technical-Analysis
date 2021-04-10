@@ -1,4 +1,5 @@
 from tradingview_ta import TA_Handler, Interval, Exchange
+from Models.Indicator import Indicator
 import sys, time
 
 class TradingView_TA:
@@ -26,16 +27,45 @@ class TradingView_TA:
 
     
     def fetch_ta(self, symbol):
-        for interval_i in self.intervals:
-            
+        indicators = []
+
+        for timeframe in self.intervals:
             pair_ta = TA_Handler(
                 symbol=symbol,
                 screener="crypto",
                 exchange="BINANCE",
-                interval=interval_i
+                interval=timeframe
             )
-            self.print_result(pair_ta, symbol, interval_i)
+            self.print_result(pair_ta, symbol, timeframe)
+            
+            indicators.append(
+                Indicator(
+                    key = 'SUMMARY',
+                    value =  pair_ta.get_analysis().summary['RECOMMENDATION'],
+                    timeframe =  timeframe,
+                    symbol =  symbol
+                )
+            )
+            indicators.append(
+                Indicator(
+                    key = 'OSCILLATORS',
+                    value =  pair_ta.get_analysis().oscillators['RECOMMENDATION'],
+                    timeframe =  timeframe,
+                    symbol =  symbol
+                )
+            )
+            indicators.append(
+                Indicator(
+                    key = 'MOVING_AVERAGES',
+                    value =  pair_ta.get_analysis().moving_averages['RECOMMENDATION'],
+                    timeframe =  timeframe,
+                    symbol =  symbol
+                )
+            )
+            
             time.sleep(2)
+
+        return indicators
 
         
     def print_result(self, pair_ta, symbol, interval):

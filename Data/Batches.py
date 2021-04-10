@@ -18,4 +18,11 @@ class Batches(AbstractDAO):
 
 
     def get_lastest(self):
-        pass #TODO query latest batch
+        
+        cursor = self.execute("SELECT batch_id FROM batches ORDER BY created_date DESC LIMIT 1;")
+
+        batch_id_result = cursor.fetchone()
+        if batch_id_result is None:
+            return None #TODO: raise custom exception
+
+        return batch_id_result[0]
