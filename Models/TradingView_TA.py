@@ -39,12 +39,14 @@ class TradingView_TA:
                     interval=timeframe
                 )
                 
-                for indicator_key, indicator_class in IndicatorsSetup.config.items():
-                    print('indicator key:' + indicator_key)
+                
+                for indicator_class in IndicatorsSetup().get_config():
                     print('indicator class:' + str(indicator_class))
                     
                     indicator = indicator_class(pair_ta)
+                    indicator_key = indicator.key()
                     indicator_value = indicator.calculate()
+                    print('indicator key:' + indicator_key)
                     print('indicator value:' + str(indicator_value))
 
                     indicators.append(

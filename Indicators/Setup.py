@@ -1,12 +1,16 @@
-from Indicators.RecommendationSummary import RecommendationSummary
-from Indicators.RecommendationOscillators import RecommendationOscillators
-from Indicators.RecommendationMovingAverages import RecommendationMovingAverages
+import os
+from Helpers.SubclassesOf import SubclassesOf
+from Indicators.AbstractIndicator import AbstractIndicator
 
 class Setup():
-		
-	config = {
-		'SUMMARY' : RecommendationSummary,
-		'OSCILLATORS' : RecommendationOscillators,
-		'MOVING_AVERAGES' : RecommendationMovingAverages,
-	}
-	
+        
+    def get_config(self):
+        
+        current_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)))
+        
+        indicators = SubclassesOf(
+            parent_class = AbstractIndicator,
+            in_directory = current_dir,
+        ).get_list()
+
+        return indicators

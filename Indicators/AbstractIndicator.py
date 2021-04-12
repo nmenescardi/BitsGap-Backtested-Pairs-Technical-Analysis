@@ -6,5 +6,10 @@ class AbstractIndicator(ABC):
 
 
     @abstractmethod
+    def key(self):
+        pass
+
+
+    @abstractmethod
     def calculate(self, **kwargs):
         pass
