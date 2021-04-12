@@ -30,40 +30,44 @@ class TradingView_TA:
         indicators = []
 
         for timeframe in self.intervals:
-            pair_ta = TA_Handler(
-                symbol=symbol,
-                screener="crypto",
-                exchange="BINANCE",
-                interval=timeframe
-            )
-            self.print_result(pair_ta, symbol, timeframe)
-            
-            indicators.append(
-                Indicator(
-                    key = 'SUMMARY',
-                    value =  pair_ta.get_analysis().summary['RECOMMENDATION'],
-                    timeframe =  timeframe,
-                    symbol =  symbol
+            try:
+                pair_ta = TA_Handler(
+                    symbol=symbol,
+                    screener="crypto",
+                    exchange="BINANCE",
+                    interval=timeframe
                 )
-            )
-            indicators.append(
-                Indicator(
-                    key = 'OSCILLATORS',
-                    value =  pair_ta.get_analysis().oscillators['RECOMMENDATION'],
-                    timeframe =  timeframe,
-                    symbol =  symbol
+
+                self.print_result(pair_ta, symbol, timeframe)
+                
+                indicators.append(
+                    Indicator(
+                        key = 'SUMMARY',
+                        value =  pair_ta.get_analysis().summary['RECOMMENDATION'],
+                        timeframe =  timeframe,
+                        symbol =  symbol
+                    )
                 )
-            )
-            indicators.append(
-                Indicator(
-                    key = 'MOVING_AVERAGES',
-                    value =  pair_ta.get_analysis().moving_averages['RECOMMENDATION'],
-                    timeframe =  timeframe,
-                    symbol =  symbol
+                indicators.append(
+                    Indicator(
+                        key = 'OSCILLATORS',
+                        value =  pair_ta.get_analysis().oscillators['RECOMMENDATION'],
+                        timeframe =  timeframe,
+                        symbol =  symbol
+                    )
                 )
-            )
-            
-            time.sleep(2)
+                indicators.append(
+                    Indicator(
+                        key = 'MOVING_AVERAGES',
+                        value =  pair_ta.get_analysis().moving_averages['RECOMMENDATION'],
+                        timeframe =  timeframe,
+                        symbol =  symbol
+                    )
+                )
+                
+                time.sleep(2)
+            except:
+                print( "Error fetching {}-{}".format(symbol,timeframe) )
 
         return indicators
 
