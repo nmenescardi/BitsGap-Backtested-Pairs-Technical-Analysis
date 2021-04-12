@@ -2,8 +2,9 @@ from dotenv import load_dotenv
 import time, sys, json, os
 from Models.Bitsgap import Bitsgap
 from Models.Credentials import Credentials
+from Jobs.AbstractJob import AbstractJob
 
-class PairsFetcher:
+class PairsFetcher(AbstractJob):
 
     def run(self):
         # Load Env variables:

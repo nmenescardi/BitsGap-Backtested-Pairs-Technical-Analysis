@@ -3,8 +3,9 @@ import time, sys, json, os
 from Data.Pairs import Pairs as PairsDAO
 from Data.Batches import Batches as BatchesDAO
 from Data.BatchesPairs import BatchesPairs as BatchesPairsDAO
+from Jobs.AbstractJob import AbstractJob
 
-class BatchSaver:
+class BatchSaver(AbstractJob):
     
     def __init__(self, pairs):
         self.pairs = pairs
