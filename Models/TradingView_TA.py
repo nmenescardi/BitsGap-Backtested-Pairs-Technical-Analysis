@@ -1,5 +1,6 @@
 from tradingview_ta import TA_Handler, Interval, Exchange
 from Models.Indicator import Indicator
+from Indicators.Setup import Setup as IndicatorsSetup
 import sys, time
 
 class TradingView_TA:
@@ -37,53 +38,26 @@ class TradingView_TA:
                     exchange="BINANCE",
                     interval=timeframe
                 )
-
-                self.print_result(pair_ta, symbol, timeframe)
                 
-                indicators.append(
-                    Indicator(
-                        key = 'SUMMARY',
-                        value =  pair_ta.get_analysis().summary['RECOMMENDATION'],
-                        timeframe =  timeframe,
-                        symbol =  symbol
+                for indicator_key, indicator_class in IndicatorsSetup.config.items():
+                    print('indicator key:' + indicator_key)
+                    print('indicator class:' + str(indicator_class))
+                    
+                    indicator = indicator_class(pair_ta)
+                    indicator_value = indicator.calculate()
+                    print('indicator value:' + str(indicator_value))
+
+                    indicators.append(
+                        Indicator(
+                            key = indicator_key,
+                            value =  indicator_value,
+                            timeframe =  timeframe,
+                            symbol =  symbol
+                        )
                     )
-                )
-                indicators.append(
-                    Indicator(
-                        key = 'OSCILLATORS',
-                        value =  pair_ta.get_analysis().oscillators['RECOMMENDATION'],
-                        timeframe =  timeframe,
-                        symbol =  symbol
-                    )
-                )
-                indicators.append(
-                    Indicator(
-                        key = 'MOVING_AVERAGES',
-                        value =  pair_ta.get_analysis().moving_averages['RECOMMENDATION'],
-                        timeframe =  timeframe,
-                        symbol =  symbol
-                    )
-                )
                 
                 time.sleep(2)
             except:
                 print( "Error fetching {}-{}".format(symbol,timeframe) )
 
         return indicators
-
-        
-    def print_result(self, pair_ta, symbol, interval):
-        if not self.should_print:
-            return
-
-        header_str = "{}-{}".format(symbol, interval)
-        print(header_str)
-        body_str = "Summary: {}. Oscillators: {}. MAs: {}".format(
-            pair_ta.get_analysis().summary['RECOMMENDATION'],
-            pair_ta.get_analysis().oscillators['RECOMMENDATION'],
-            pair_ta.get_analysis().moving_averages['RECOMMENDATION']
-        )
-        print(body_str)
-        print("------------------------")
-        sys.stdout.flush()
-        #print(pair_ta.get_analysis().indicators)
