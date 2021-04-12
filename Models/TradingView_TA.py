@@ -5,26 +5,18 @@ import sys, time
 
 class TradingView_TA:
     intervals = [
-        #Interval.INTERVAL_1_MINUTE,
+        Interval.INTERVAL_1_MINUTE,
         Interval.INTERVAL_5_MINUTES,
-        #Interval.INTERVAL_15_MINUTES,
+        Interval.INTERVAL_15_MINUTES,
         Interval.INTERVAL_1_HOUR,
         Interval.INTERVAL_4_HOURS,
         Interval.INTERVAL_1_DAY,
-        #Interval.INTERVAL_1_WEEK,
+        Interval.INTERVAL_1_WEEK,
     ]
-    
-    score = {
-        'STRONG_BUY': 5,
-        'BUY': 2,
-        'NEUTRAL': 0,
-        'SELL': 2,
-        'STRONG_SELL': -5
-    }
 
 
-    def __init__(self, should_print = False):
-        self.should_print = should_print
+    def __init__(self):
+        self.indicators_setup = IndicatorsSetup()
 
     
     def fetch_ta(self, symbol):
@@ -39,15 +31,10 @@ class TradingView_TA:
                     interval=timeframe
                 )
                 
-                
-                for indicator_class in IndicatorsSetup().get_config():
-                    print('indicator class:' + str(indicator_class))
-                    
+                for indicator_class in self.indicators_setup.get_config():
                     indicator = indicator_class(pair_ta)
                     indicator_key = indicator.key()
                     indicator_value = indicator.calculate()
-                    print('indicator key:' + indicator_key)
-                    print('indicator value:' + str(indicator_value))
 
                     indicators.append(
                         Indicator(

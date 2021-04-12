@@ -11,7 +11,7 @@ class TaDispacher(AbstractJob):
 
 
     def run(self):
-        tv_ta = TradingView_TA( should_print=True )
+        tv_ta = TradingView_TA()
 
         for pair in self.pairs:
             indicators = tv_ta.fetch_ta(pair)
