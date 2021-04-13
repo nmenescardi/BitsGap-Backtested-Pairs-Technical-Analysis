@@ -24,6 +24,8 @@ class TradingView_TA:
 
         for timeframe in self.intervals:
             try:
+                print( "Fetching {}-{} ...".format(symbol,timeframe) )
+
                 pair_ta = TA_Handler(
                     symbol=symbol,
                     screener="crypto",
