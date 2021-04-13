@@ -12,6 +12,6 @@ batch_saver = BatchSaver(pairs)
 batch_saver.run()
 
 pairs_dao = PairsDAO()
-btc_quote_pairs = pairs_dao.get_pairs_by_quote(quote = 'BTC', amount = 5)
+btc_quote_pairs = pairs_dao.get_pairs_by_quote(quote = 'BTC')
 ta_dispacher = TaDispacher(btc_quote_pairs)
 ta_dispacher.run()
