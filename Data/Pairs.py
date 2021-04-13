@@ -62,9 +62,4 @@ class Pairs(AbstractDAO):
             named_tuple=True
         )
 
-        pairs = []
-
-        for pair in iterator:
-            pairs.append(pair.symbol)
-        
-        return pairs
+        return [pair.symbol for pair in iterator]
