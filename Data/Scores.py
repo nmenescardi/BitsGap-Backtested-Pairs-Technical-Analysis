@@ -16,6 +16,7 @@ class Scores(AbstractDAO):
                 AND i.indicator_key = 'OSCILLATORS'
                 AND i.indicator_value IN ('BUY', 'STRONG_BUY')
                 AND i.batch_id = (select MAX(batch_id) FROM batches)
+                AND i.timeframe NOT IN ('1m', '5m')
                 GROUP BY i.pair_id
                 ORDER BY score DESC
             """,
