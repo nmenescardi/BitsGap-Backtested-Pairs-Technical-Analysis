@@ -14,10 +14,12 @@ class BatchSaver(AbstractJob):
         self.batches_pairs_dao = BatchesPairsDAO()
     
     def run(self):
-        batch_id = self.batches_dao.new()
+        self.batch_id = self.batches_dao.new()
+        [self._insert(pair) for pair in self.pairs]
 
-        for pair in self.pairs:
-            self.pairs_dao.insert(pair)
-            pair.batch_id = batch_id
-            pair.pair_id = self.pairs_dao.get_pair_id_by_symbol(pair.symbol)
-            self.batches_pairs_dao.insert(pair)
+            
+    def _insert(self, pair):
+        self.pairs_dao.insert(pair)
+        pair.batch_id = self.batch_id
+        pair.pair_id = self.pairs_dao.get_pair_id_by_symbol(pair.symbol)
+        self.batches_pairs_dao.insert(pair)
