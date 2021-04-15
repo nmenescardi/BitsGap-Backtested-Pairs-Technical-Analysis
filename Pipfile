@@ -9,7 +9,6 @@ webdriver-manager = "==3.2.2"
 tradingview-ta = "==3.2.3"
 numpy = "==1.19.1"
 mysql-connector-repackaged = "==0.3.1"
-python-dotenv = "==0.17.0"
 mysql-connector-python = "*"
 
 [dev-packages]

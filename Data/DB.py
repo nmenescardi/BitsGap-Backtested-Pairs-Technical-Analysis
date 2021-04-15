@@ -1,12 +1,10 @@
 import os
-from dotenv import load_dotenv
 import mysql.connector
 from mysql.connector import Error
 from distutils.util import strtobool
 
 class DB():
 	def __init__(self):
-		load_dotenv()
 		credentials = {
 			'host' : os.getenv("DB_HOST"),
 			'database' : os.getenv("DB_NAME"),

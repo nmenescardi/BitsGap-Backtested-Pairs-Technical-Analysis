@@ -1,4 +1,3 @@
-from dotenv import load_dotenv
 import time, sys, json, os
 from Data.Pairs import Pairs as PairsDAO
 from Data.Batches import Batches as BatchesDAO
